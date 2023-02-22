@@ -1,17 +1,21 @@
+import serial
 import time
-from Adafruit_LED_Backpack import Matrix8x8
 
-# Initialize the LED matrix
-matrix = Matrix8x8.Matrix8x8()
-matrix.begin()
+ser = serial.Serial('COM3', 9600)
 
-# Set the LED at the intersection of the 3rd column and the 4th row to on
-matrix.set_pixel(3, 4, 1)
+def blink_led(row, col, row2, col2):
+    row_byte = bytes([row])
+    col_byte = bytes([col])
+    row_byte2 = bytes([row2])
+    col_byte2 = bytes([col2])
+    ser.write(row_byte)
+    ser.write(col_byte)
+    ser.write(row_byte2)
+    ser.write(col_byte2)
 
-# Blink the LED 10 times
-for i in range(10):
-    matrix.write_display()
-    time.sleep(0.5)
-    matrix.clear()
-    matrix.write_display()
-    time.sleep(0.5)
+while True:
+    row = int(input("Enter the row number (0-7): "))
+    col = int(input("Enter the column number (0-7): "))
+    row2 = int(input("Enter the row number (0-7): "))
+    col2 = int(input("Enter the column number (0-7): "))
+    blink_led(row, col, row2, col2)

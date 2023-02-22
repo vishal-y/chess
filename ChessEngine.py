@@ -1,5 +1,20 @@
 import chess as ch
 import random as rd
+import serial
+import time
+
+ser = serial.Serial('COM3', 9600)
+
+def blink_led(row, col, row2, col2):
+    row_byte = bytes([row])
+    col_byte = bytes([col])
+    row_byte2 = bytes([row2])
+    col_byte2 = bytes([col2])
+    ser.write(row_byte)
+    ser.write(col_byte)
+    ser.write(row_byte2)
+    ser.write(col_byte2)
+
 
 def chess_notation_to_row_col(chess_notation):
     """
@@ -33,15 +48,15 @@ class Engine:
     def getBestMove(self):
 
         move = self.engine(None, 1);
-
         print("Selected move:", move , type(move))
-
         move_str = move.uci()
         print("move type : ",type(move_str))
         start_row, start_col, end_row, end_col = chess_notation_to_row_col(move_str)
         print("Notation in algebric format : ")
         print(start_row + 1, start_col + 1)  # Output: 2, 5
         print(end_row + 1, end_col + 1)  # Output: 4, 5
+
+        blink_led(start_row, start_col, end_row, end_col) # blinking the leds
 
         return move
 

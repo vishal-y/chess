@@ -14,6 +14,7 @@ class Main:
             print("""To undo your last move, type "undo".""")
             # get the player's move
             play = input("Your move: ")
+          
             # allow the player to undo their last move
             if (play=="undo"):
                 self.board.pop()
@@ -80,5 +81,3 @@ class Main:
 newBoard= ch.Board()
 game = Main(newBoard)
 bruh = game.startGame()
-
-
